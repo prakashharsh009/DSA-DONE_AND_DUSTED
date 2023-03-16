@@ -1,6 +1,5 @@
 //BASIC RECURSION
-
-Int basicRecursion( int index, vector<int> &heights){
+int basicRecursion( int index, vector<int> &heights){
 
   if(index == 0){ return 0;}
   
@@ -45,4 +44,32 @@ int tab(int n, vector<int> &heights, vector<int> &dp){
         dp[i] = min(left, right);
     }
     return dp[n-1];
+}
+
+Note - There will always be a space optimised solution of questions like (indx - 1) (indx - 2)
+
+//SPACE OPTIMISATION
+int frogJump(int n, vector<int> &heights)
+{
+    // Write your code here.
+   //vector<int> dp(n+1, -1);
+   //int res =  memo(n-1, heights,dp);
+
+   int left, right;
+   int n1 = 0,n2 = 0;
+   int n3;
+
+   for (int i = 1 ; i < n ; i++){
+      left = n2 + abs(heights[i] - heights[i-1]);
+      right = INT_MAX;
+      if(i > 1){
+          right = n1 + abs(heights[i] - heights[i-2]);
+      }
+
+      n3 = min(left,right);
+      n1 = n2;
+      n2 = n3;
+   }
+
+   return n3;
 }
