@@ -57,3 +57,21 @@ int tab(int m , int n , vector<vector<int>> &grid){
 }
 
 //SPACE OPTIMISED
+int space(int n , int m, vector<vector<int>> &grid){
+
+    vector<int> prev(m,0);
+    for (int i = 0 ; i < n ; i++){
+        vector<int> temp(m,0);
+        for (int j = 0 ; j < m ; j++){
+            if(i == 0 and j == 0) temp[j] = grid[i][j];
+            else{
+                int up = 1e9, left = 1e9;
+                if(i > 0) up = grid[i][j] + prev[j];
+                if(j > 0) left = grid[i][j] + temp[j-1];
+                temp[j] = min(up,left);
+            }
+        }
+        prev = temp;
+    }
+    return prev[m-1];
+}
