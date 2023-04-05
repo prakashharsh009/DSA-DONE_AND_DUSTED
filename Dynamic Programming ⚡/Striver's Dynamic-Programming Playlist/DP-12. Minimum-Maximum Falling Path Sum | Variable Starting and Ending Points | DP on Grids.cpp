@@ -72,8 +72,45 @@ int getMaxPathSum(vector<vector<int>> &matrix)
    return maxi;
 }
 
+//SPACE OPTIMISED
+int getMaxPathSum(vector<vector<int>> &matrix)
+{
+    //  Write your code here.
+    int n  = matrix.size();
+    int m = matrix[0].size();
+    int maxi = -1e9;
 
+    vector<int> prev(m,0);
 
+    //Base Case - Filling the first row
+    for (int j = 0 ; j < m ; j++){
+        prev[j] = matrix[0][j];
+    }
+
+    for (int i = 1 ; i < n ; i++){
+        vector<int> temp(m,0);
+        for (int j =  0  ; j < m ; j++){
+
+            int up        = matrix[i][j] + prev[j];
+            int leftdiag  = matrix[i][j];
+            if(j  - 1 >= 0) leftdiag += prev[j-1];
+            else leftdiag += -1e9;
+            //Out of Bound checks
+            int rightdiag = matrix[i][j];
+            if(j+1 < m) rightdiag+= prev[j+1];
+            else rightdiag += -1e9;
+            
+            temp[j] = max(up, max(rightdiag, leftdiag));
+        }
+        prev = temp;
+    }
+
+   for (int j  = 0 ; j < m ; j++){
+        maxi = max(maxi, prev[j]);
+    }
+    
+   return maxi;
+}
 
 
 //Note include this part in the main function so that we can get the maximum path since this question also has variable ending points
