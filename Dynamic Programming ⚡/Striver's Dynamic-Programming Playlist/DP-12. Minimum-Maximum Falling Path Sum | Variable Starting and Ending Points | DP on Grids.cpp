@@ -32,3 +32,53 @@ int func(int i , int j , vector<vector<int>>& matrix, vector<vector<int>> &dp){
 
 
 //DYNAMIC PROGRAMMING - TABULATION
+
+int getMaxPathSum(vector<vector<int>> &matrix)
+{
+    //  Write your code here.
+    int n  = matrix.size();
+    int m = matrix[0].size();
+    int maxi = -1e9;
+
+    vector<vector<int>> dp(n,vector<int>(m, -1));
+
+
+    //Base Case - Filling the first row
+    for (int j = 0 ; j < m ; j++){
+        dp[0][j] = matrix[0][j];
+    }
+
+    for (int i = 1 ; i < n ; i++){
+        for (int j =  0  ; j < m ; j++){
+
+            int up        = matrix[i][j] + dp[i-1][j];
+            int leftdiag  = matrix[i][j];
+            if(j  - 1 >= 0) leftdiag += dp[i-1][j-1];
+            else leftdiag += -1e9;
+            //Out of Bound checks
+            int rightdiag = matrix[i][j];
+            if(j+1 < m) rightdiag+= dp[i-1][j+1];
+            else rightdiag += -1e9;
+            
+            dp[i][j] = max(up, max(rightdiag, leftdiag));
+        }
+    }
+
+   for (int j  = 0 ; j < m ; j++){
+        maxi = max(maxi, dp[n-1][j]);
+    }
+    
+    
+   return maxi;
+}
+
+
+
+
+
+//Note include this part in the main function so that we can get the maximum path since this question also has variable ending points
+//For Basic and Memoization Soln Only
+for (int j  = 0 ; j < m ; j++){
+        maxi = max(maxi, func(n-1, j, matrix, dp));
+    }
+return maxi;
